@@ -1,11 +1,10 @@
 package com.mycompany.mavenproject1;
-import java.net.http.*;
-import java.net.URI;
 import java.io.IOException;
-import com.google.gson.*;
-import java.util.Scanner;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Scanner;
+
+import com.google.gson.Gson;
 public class PruebaAPI {
     public static void main(String[] args) {
         System.out.println("Ingresa el nombre del pokemon");
@@ -19,7 +18,16 @@ public class PruebaAPI {
                 System.out.println("Error: No se ha podido establecer la conexion a la API");
             }
             String jsonResponse = readApiResponse(apiConnection);
-            System.out.println(jsonResponse);
+            Gson gson = new Gson();
+            Pokemon pokemon = gson.fromJson(jsonResponse, Pokemon.class);
+            System.out.println("Nombre: " + pokemon.getName());
+            System.out.println("ID: " + pokemon.getId());   
+            System.out.println("Tipo: " + pokemon.getType());
+            System.out.println("Altura: " + pokemon.getHeight());
+            System.out.println("Peso: " + pokemon.getWeight());
+            System.out.println("Experiencia base: " + pokemon.getBaseExperience());
+            System.out.println("Movimientos: " + pokemon.getMoves());
+            
         }catch(IOException e){
             e.printStackTrace();
         }
