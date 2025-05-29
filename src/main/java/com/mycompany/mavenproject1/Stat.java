@@ -4,6 +4,10 @@ public class Stat {
     private String name;
     private String url;
 
+    // Default constructor for Gson
+    public Stat() {
+    }
+
     public Stat(String name, String url) {
         this.name = name;
         this.url = url;

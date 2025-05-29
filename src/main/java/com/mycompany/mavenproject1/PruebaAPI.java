@@ -51,12 +51,41 @@ public class PruebaAPI {
                 System.out.println("\n=== Habilidades ===");
                 System.out.println(pokemon.getAbilitiesAsString());
                 
-                // Display stats
+                // Display stats with improved formatting
                 System.out.println("\n=== Estadísticas ===");
-                System.out.println(pokemon.getStatsAsString());
+                PokemonStat[] stats = pokemon.getStats();
+                if (stats != null && stats.length > 0) {
+                    for (PokemonStat stat : stats) {
+                        String statName = stat.getStat().getName();
+                        // Translate stat names to Spanish
+                        switch (statName) {
+                            case "hp":
+                                statName = "PS (Puntos de Salud)";
+                                break;
+                            case "attack":
+                                statName = "Ataque";
+                                break;
+                            case "defense":
+                                statName = "Defensa";
+                                break;
+                            case "special-attack":
+                                statName = "Ataque Especial";
+                                break;
+                            case "special-defense":
+                                statName = "Defensa Especial";
+                                break;
+                            case "speed":
+                                statName = "Velocidad";
+                                break;
+                        }
+                        System.out.printf("%-20s: %d%n", statName, stat.getBaseStat());
+                    }
+                } else {
+                    System.out.println("No hay estadísticas disponibles");
+                }
                 
                 // Display moves
-                System.out.println("=== Movimientos ===");
+                System.out.println("\n=== Movimientos ===");
                 System.out.println(pokemon.getMovesAsString());
                 
                 // Display sprite URLs
