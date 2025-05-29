@@ -57,27 +57,6 @@ public class PruebaAPI {
                 if (stats != null && stats.length > 0) {
                     for (PokemonStat stat : stats) {
                         String statName = stat.getStat().getName();
-                        // Translate stat names to Spanish
-                        switch (statName) {
-                            case "hp":
-                                statName = "PS (Puntos de Salud)";
-                                break;
-                            case "attack":
-                                statName = "Ataque";
-                                break;
-                            case "defense":
-                                statName = "Defensa";
-                                break;
-                            case "special-attack":
-                                statName = "Ataque Especial";
-                                break;
-                            case "special-defense":
-                                statName = "Defensa Especial";
-                                break;
-                            case "speed":
-                                statName = "Velocidad";
-                                break;
-                        }
                         System.out.printf("%-20s: %d%n", statName, stat.getBaseStat());
                     }
                 } else {
@@ -108,14 +87,14 @@ public class PruebaAPI {
         }
     }
     
-    private static HttpURLConnection fetchApiResponse(String urlString) throws IOException {
+    public static HttpURLConnection fetchApiResponse(String urlString) throws IOException {
         URL url = new URL(urlString);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         return conn;
     }
     
-    private static String readApiResponse(HttpURLConnection apiConnection) throws IOException {
+    public static String readApiResponse(HttpURLConnection apiConnection) throws IOException {
         StringBuilder resultJson = new StringBuilder();
         Scanner sc = new Scanner(apiConnection.getInputStream());
         
