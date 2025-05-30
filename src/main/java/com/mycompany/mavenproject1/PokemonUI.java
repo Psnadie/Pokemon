@@ -23,8 +23,8 @@ public class PokemonUI extends JFrame {
     private JScrollPane scrollPane;
     
     // Sprite navigation state
-    private String[] spriteUrls;
-    private String[] spriteLabels;
+    private java.util.List<String> spriteUrls;
+    private java.util.List<String> spriteLabels;
     private int currentSpriteIndex;
     
     // Current Pokemon
@@ -309,6 +309,12 @@ public class PokemonUI extends JFrame {
                         String variantJson = PruebaAPI.readApiResponse(variantConnection);
                         Pokemon variantPokemon = new Gson().fromJson(variantJson, Pokemon.class);
                         
+                        // Add variant sprites to navigation
+                        String variantName = variety.getPokemon().getName();
+                        if (!variety.isDefault()) {  // Skip default form as it's already included
+                            addVariantSprites(variantPokemon, capitalizeFirstLetter(variantName));
+                        }
+                        
                         // Create panel for this variant
                         JPanel variantPanel = new JPanel();
                         variantPanel.setLayout(new BoxLayout(variantPanel, BoxLayout.Y_AXIS));
@@ -421,36 +427,38 @@ public class PokemonUI extends JFrame {
         return input.substring(0, 1).toUpperCase() + input.substring(1);
     }
     
-    private void initializeSpriteNavigation(PokemonSprites sprites) {
-        // Create arrays of available sprites and their labels
-        java.util.List<String> urlsList = new java.util.ArrayList<>();
-        java.util.List<String> labelsList = new java.util.ArrayList<>();
+    private void initializeSpriteNavigation(PokemonSprites mainSprites) {
+        spriteUrls = new java.util.ArrayList<>();
+        spriteLabels = new java.util.ArrayList<>();
         
-        if (sprites.getFrontDefault() != null) {
-            urlsList.add(sprites.getFrontDefault());
-            labelsList.add("Frontal Normal");
-        }
-        if (sprites.getBackDefault() != null) {
-            urlsList.add(sprites.getBackDefault());
-            labelsList.add("Trasero Normal");
-        }
-        if (sprites.getFrontShiny() != null) {
-            urlsList.add(sprites.getFrontShiny());
-            labelsList.add("Frontal Shiny");
-        }
-        if (sprites.getBackShiny() != null) {
-            urlsList.add(sprites.getBackShiny());
-            labelsList.add("Trasero Shiny");
-        }
+        // Add main Pokemon sprites
+        addSpriteIfNotNull(mainSprites.getFrontDefault(), "Frontal Normal");
+        addSpriteIfNotNull(mainSprites.getBackDefault(), "Trasero Normal");
+        addSpriteIfNotNull(mainSprites.getFrontShiny(), "Frontal Shiny");
+        addSpriteIfNotNull(mainSprites.getBackShiny(), "Trasero Shiny");
         
-        // Convert lists to arrays
-        spriteUrls = urlsList.toArray(new String[0]);
-        spriteLabels = labelsList.toArray(new String[0]);
         currentSpriteIndex = 0;
     }
     
+    private void addSpriteIfNotNull(String url, String label) {
+        if (url != null && !url.isEmpty()) {
+            spriteUrls.add(url);
+            spriteLabels.add(label);
+        }
+    }
+    
+    private void addVariantSprites(Pokemon variantPokemon, String variantName) {
+        PokemonSprites sprites = variantPokemon.getSprites();
+        if (sprites != null) {
+            addSpriteIfNotNull(sprites.getFrontDefault(), "Frontal " + variantName);
+            addSpriteIfNotNull(sprites.getBackDefault(), "Trasero " + variantName);
+            addSpriteIfNotNull(sprites.getFrontShiny(), "Frontal Shiny " + variantName);
+            addSpriteIfNotNull(sprites.getBackShiny(), "Trasero Shiny " + variantName);
+        }
+    }
+    
     private void showCurrentSprite() {
-        if (spriteUrls == null || spriteUrls.length == 0) {
+        if (spriteUrls == null || spriteUrls.isEmpty()) {
             spriteLabel.setIcon(null);
             spriteLabel.setText("No hay sprites disponibles");
             return;
@@ -458,14 +466,14 @@ public class PokemonUI extends JFrame {
         
         try {
             // Load and display the current sprite
-            String currentUrl = spriteUrls[currentSpriteIndex];
-            String currentLabel = spriteLabels[currentSpriteIndex];
+            String currentUrl = spriteUrls.get(currentSpriteIndex);
+            String currentLabel = spriteLabels.get(currentSpriteIndex);
             
             URL url = new URL(currentUrl);
             java.awt.image.BufferedImage bufferedImage = ImageIO.read(url);
             
             if (bufferedImage != null) {
-                int targetSize = 150;
+                int targetSize = 200;
                 Image scaledImage = bufferedImage.getScaledInstance(targetSize, targetSize, Image.SCALE_SMOOTH);
                 ImageIcon icon = new ImageIcon(scaledImage);
                 spriteLabel.setIcon(icon);
@@ -481,15 +489,15 @@ public class PokemonUI extends JFrame {
     }
     
     private void showNextSprite() {
-        if (spriteUrls != null && spriteUrls.length > 0) {
-            currentSpriteIndex = (currentSpriteIndex + 1) % spriteUrls.length;
+        if (spriteUrls != null && !spriteUrls.isEmpty()) {
+            currentSpriteIndex = (currentSpriteIndex + 1) % spriteUrls.size();
             showCurrentSprite();
         }
     }
     
     private void showPreviousSprite() {
-        if (spriteUrls != null && spriteUrls.length > 0) {
-            currentSpriteIndex = (currentSpriteIndex - 1 + spriteUrls.length) % spriteUrls.length;
+        if (spriteUrls != null && !spriteUrls.isEmpty()) {
+            currentSpriteIndex = (currentSpriteIndex - 1 + spriteUrls.size()) % spriteUrls.size();
             showCurrentSprite();
         }
     }
