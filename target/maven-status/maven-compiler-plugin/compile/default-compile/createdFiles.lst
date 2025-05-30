@@ -1,4 +1,14 @@
-com\mycompany\mavenproject1\Move.class
 com\mycompany\mavenproject1\PokemonMove.class
+com\mycompany\mavenproject1\Species$PokedexNumber.class
+com\mycompany\mavenproject1\Species$Name.class
 com\mycompany\mavenproject1\PruebaAPI.class
+com\mycompany\mavenproject1\Species$PokemonVariety.class
+com\mycompany\mavenproject1\PokemonSpecies.class
+com\mycompany\mavenproject1\Species$FormDescription.class
+com\mycompany\mavenproject1\Species$FlavorTextEntry.class
+com\mycompany\mavenproject1\Move.class
+com\mycompany\mavenproject1\Species$Genus.class
+com\mycompany\mavenproject1\Species.class
+com\mycompany\mavenproject1\Species$NamedAPIResource.class
+com\mycompany\mavenproject1\Species$EvolutionChain.class
 com\mycompany\mavenproject1\Pokemon.class

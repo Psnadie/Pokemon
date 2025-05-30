@@ -11,6 +11,7 @@ public class Pokemon {
     private PokemonMove[] moves;
     private PokemonStat[] stats;
     private PokemonSprites sprites;
+    private PokemonSpecies species;
 
     // Constructor without parameters for Gson
     public Pokemon() {
@@ -19,7 +20,7 @@ public class Pokemon {
     // Full constructor
     public Pokemon(String name, int id, int baseExperience, int height, int weight,
                   PokemonType[] types, PokemonAbility[] abilities, PokemonMove[] moves,
-                  PokemonStat[] stats, PokemonSprites sprites) {
+                  PokemonStat[] stats, PokemonSprites sprites, PokemonSpecies species) {
         this.name = name;
         this.id = id;
         this.baseExperience = baseExperience;
@@ -30,6 +31,7 @@ public class Pokemon {
         this.moves = moves;
         this.stats = stats;
         this.sprites = sprites;
+        this.species = species;
     }
 
     public String getName() {
@@ -121,5 +123,9 @@ public class Pokemon {
 
     public PokemonSprites getSprites() {
         return sprites;
+    }
+
+    public PokemonSpecies getSpecies() {
+        return species;
     }
 }
